@@ -10,4 +10,4 @@ public class ApplicationDbContext : IdentityDbContext
 	{ }
 
 	public virtual DbSet<AppUsuario> AppUsuarios { get; set; }
-}
+	}

@@ -29,6 +29,7 @@ public class RegistroViewModel
     public string Ciudad { get; set; }
     public string Direccion { get; set; }
 
+    [Display(Name = "Fecha de Nacimiento")]
     [Required(ErrorMessage = "La fecha de nacimiento es obligatorio")]
     public DateTime FechaNacimiento { get; set; }
 

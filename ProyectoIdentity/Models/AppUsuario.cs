@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoIdentity.Models;
 
@@ -11,6 +12,8 @@ public class AppUsuario : IdentityUser
     public string Pais { get; set; }
     public string Ciudad { get; set; }
     public string Direccion { get; set; }
+
+    [Column(TypeName = "timestamp")]
     public DateTime FechaNacimiento { get; set; }
     public bool Estado { get; set; }
 }

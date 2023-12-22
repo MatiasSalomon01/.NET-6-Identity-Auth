@@ -22,15 +22,19 @@ public class CuentasController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Registro()
+    public async Task<IActionResult> Registro(string returnUrl)
     {
+        ViewData["ReturnUrl"] = returnUrl;
         var registroVM = new RegistroViewModel();
         return View(registroVM);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Registro(RegistroViewModel model)
+    public async Task<IActionResult> Registro(RegistroViewModel model, string returnUrl)
     {
+        ViewData["ReturnUrl"] = returnUrl;
+        returnUrl = returnUrl ?? Url.Content("~/");
+
         if (ModelState.IsValid)
         {
             var usuario = new AppUsuario
@@ -53,7 +57,7 @@ public class CuentasController : Controller
             if (resultado.Succeeded)
             {
                 await _signInManager.SignInAsync(usuario, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                return LocalRedirect(returnUrl);
             }
 
             ValidarErrores(resultado);
@@ -74,13 +78,15 @@ public class CuentasController : Controller
     public async Task<IActionResult> Acceso(AccesoViewModel model, string returnUrl)
     {
         ViewData["ReturnUrl"] = returnUrl;
+        returnUrl = returnUrl ?? Url.Content("~/");
+
         if (ModelState.IsValid)
         {
             var resultado = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (resultado.Succeeded)
             {
-                return Redirect(returnUrl);
+                return LocalRedirect(returnUrl);
             }
             else
             {

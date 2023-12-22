@@ -64,21 +64,23 @@ public class CuentasController : Controller
 
     //Metodo para mostrar formulario de acceso
     [HttpGet]
-    public IActionResult Acceso()
+    public IActionResult Acceso(string returnUrl)
     {
+        ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Acceso(AccesoViewModel model)
+    public async Task<IActionResult> Acceso(AccesoViewModel model, string returnUrl)
     {
+        ViewData["ReturnUrl"] = returnUrl;
         if (ModelState.IsValid)
         {
             var resultado = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             if (resultado.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return Redirect(returnUrl);
             }
             else
             {

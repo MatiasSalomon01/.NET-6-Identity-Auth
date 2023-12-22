@@ -90,6 +90,15 @@ public class CuentasController : Controller
         return View(model);
     }
 
+    //Salir o cerrar sesion de la aplicacion 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SalirAplicacion()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+    }
+
 
     //Manejador de errores
     private void ValidarErrores(IdentityResult resultado)

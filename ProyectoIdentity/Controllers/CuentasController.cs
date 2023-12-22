@@ -22,7 +22,7 @@ public class CuentasController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Registro(string returnUrl)
+    public async Task<IActionResult> Registro(string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         var registroVM = new RegistroViewModel();
@@ -30,7 +30,7 @@ public class CuentasController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Registro(RegistroViewModel model, string returnUrl)
+    public async Task<IActionResult> Registro(RegistroViewModel model, string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         returnUrl = returnUrl ?? Url.Content("~/");
@@ -68,25 +68,29 @@ public class CuentasController : Controller
 
     //Metodo para mostrar formulario de acceso
     [HttpGet]
-    public IActionResult Acceso(string returnUrl)
+    public IActionResult Acceso(string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Acceso(AccesoViewModel model, string returnUrl)
+    public async Task<IActionResult> Acceso(AccesoViewModel model, string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
         returnUrl = returnUrl ?? Url.Content("~/");
 
         if (ModelState.IsValid)
         {
-            var resultado = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            var resultado = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
             if (resultado.Succeeded)
             {
                 return LocalRedirect(returnUrl);
+            }
+            if (resultado.IsLockedOut)
+            {
+                return View("Bloqueado");
             }
             else
             {

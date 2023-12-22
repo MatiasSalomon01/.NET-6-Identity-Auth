@@ -92,6 +92,11 @@
     </div>
 </div>
 
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial"); 
+    }
+}
 @*<h1>Registro de usuario</h1>
 <form asp-controller="Cuentas" asp-action="Registro" method="POST" role="form">
     <div class="text-danger" asp-validation-summary="All"></div>

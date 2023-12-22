@@ -62,6 +62,14 @@ public class CuentasController : Controller
         return View(model);
     }
 
+    //Metodo para mostrar formulario de acceso
+    [HttpGet]
+    public IActionResult Acceso()
+    {
+        return View();
+    }
+
+
     //Manejador de errores
     private void ValidarErrores(IdentityResult resultado)
     {
